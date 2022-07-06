@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// function to check for valid card length
 int is_valid_length(long numbers) {
     int length = 0;
     
@@ -14,6 +15,7 @@ int is_valid_length(long numbers) {
     return (0);
 }
 
+// function to get the first 2 digits of the card
 int get_first_2digits(long input)
 {
     long res = input;
@@ -26,6 +28,7 @@ int get_first_2digits(long input)
     return res;
 }
 
+// function just to duplicate a src string to print result (not necessary)
 char    *strdup(char *src) {
     int i = 0;
     char *dest;
@@ -42,6 +45,7 @@ char    *strdup(char *src) {
     return (dest);
 }
 
+// function to check the type of card (VISA, AMEX, MASTERCARD)
 char    *type_of_card(long input) {
     int start_num = get_first_2digits(input);
     char *result;
@@ -70,6 +74,7 @@ char    *type_of_card(long input) {
     return (result);
 }
 
+// functino to sum any 2 digits during the checksum calculation
 int reformat_product(int product) {
     int res = 0;
     
@@ -83,6 +88,7 @@ int reformat_product(int product) {
     return (res);
 }
 
+// function to get checksum
 int get_checksum(long input) {
     int sum = 0;
     int is_alternate = -1;
@@ -90,13 +96,14 @@ int get_checksum(long input) {
     
     card_num = input;
     while (card_num > 0) {
-        if (is_alternate == 1) {
+        if (is_alternate == 1) { // to sum alternate digits starting from the 2nd last
             sum += reformat_product(card_num % 10);
         }
         is_alternate *= -1;
         card_num /= 10;
     }
     
+    // then, sum the rest of the digits
     card_num = input;
     is_alternate = 1;
     while (card_num > 0) {
@@ -111,10 +118,10 @@ int get_checksum(long input) {
 }
 
 int main(int argc, char** argv) {
+    // get cardNumber from argument (argv)
     long cardNumber = atol(argv[1]);
-    // printf("Valid length is: %d\n", is_valid_length(cardNumber));
-    // printf("Check sum is: %d\n", get_checksum(cardNumber));
-    // printf("Type of card is: %s\n", type_of_card(cardNumber));
+
+    // checks for valid length and checksum
     if (!(is_valid_length(cardNumber) && get_checksum(cardNumber))) {
         printf("INVALID");
     } else {
